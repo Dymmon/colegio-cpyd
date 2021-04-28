@@ -37,6 +37,35 @@ estudiante::estudiante(int ident, string cod, int leng, int ing, int mat, int ci
     //ctor
 }
 
+int estudiante::get_pg()
+{
+    return prom_gral;
+}
+int estudiante::get_paryed()
+{
+    return prom_artyed;
+}
+
+int estudiante::get_plehi()
+{
+    return prom_lengyhist;
+}
+
+int estudiante::get_pmaci()
+{
+    return prom_matycien;
+}
+
+string estudiante::get_codigo()
+{
+    return codigo;
+}
+
+int estudiante::get_iden()
+{
+    return identificador;
+}
+
 void estudiante::mostrar()
 {
     cout << "codigo: " << codigo << endl << "promedio general: " << prom_gral << endl << "promedio artistico: "<< prom_artyed << endl << "promedio humanista: " << prom_lengyhist << endl << "promedio cientifico: " << prom_matycien << endl;
@@ -71,7 +100,9 @@ int str_to_int(string s)
 
 }
 
-void procesar(stack<estudiante> &s)
+
+
+void procesar(vekest &V)
 {
     ifstream archivo;
     archivo.open("estudiantes.csv", ios::in);
@@ -102,29 +133,183 @@ void procesar(stack<estudiante> &s)
                     i++;
                 }
                 estudiante aux(iden,codigo,notas[0],notas[1],notas[2],notas[3],notas[4],notas[5],notas[6],notas[7]);
-                s.push(aux);
+                V.push_back(aux);
                 //aux.mostrar();
             }
         }
 }
 
-void ver_stack(stack<estudiante> s)
+void ver_vector(vekest V)
 {
-    stack<estudiante> aux;
-    while(!s.empty())
+    for(int i=0; i<V.size(); i++)
     {
-        estudiante a = s.top();
-        s.pop();
-        aux.push(a);
-        a.mostrar();
+        V[i].mostrar();
         cout << endl;
     }
-    while(!aux.empty())
-    {
-        s.push(aux.top());
-        aux.pop();
-    }
+}
 
+void shellsort_pg(vekest &V)
+{
+    int n=V.size();
+    for(int gap = n/2; gap > 0; gap /= 2)
+    {
+        for(int i = gap; i<n; i+=1)
+        {
+            estudiante aux=V[i];
+            int j;
+            for(j = i; j >= gap && V[j - gap].get_pg() > aux.get_pg(); j -= gap)
+                V[j] = V[j - gap];
+            V[j]= aux;
+        }
+    }
+}
+
+void shellsort_artes(vekest &V)
+{
+    int n=V.size();
+    for(int gap = n/2; gap > 0; gap /= 2)
+    {
+        for(int i = gap; i<n; i+=1)
+        {
+            estudiante aux=V[i];
+            int j;
+            for(j = i; j >= gap && V[j - gap].get_paryed() > aux.get_paryed(); j -= gap)
+                V[j] = V[j - gap];
+            V[j]= aux;
+        }
+    }
+}
+
+void shellsort_human(vekest &V)
+{
+    int n=V.size();
+    for(int gap = n/2; gap > 0; gap /= 2)
+    {
+        for(int i = gap; i<n; i+=1)
+        {
+            estudiante aux=V[i];
+            int j;
+            for(j = i; j >= gap && V[j - gap].get_plehi() > aux.get_plehi(); j -= gap)
+                V[j] = V[j - gap];
+            V[j]= aux;
+        }
+    }
+}
+
+void shellsort_cientifico(vekest &V)
+{
+    int n=V.size();
+    for(int gap = n/2; gap > 0; gap /= 2)
+    {
+        for(int i = gap; i<n; i+=1)
+        {
+            estudiante aux=V[i];
+            int j;
+            for(j = i; j >= gap && V[j - gap].get_pmaci() > aux.get_pmaci(); j -= gap)
+                V[j] = V[j - gap];
+            V[j]= aux;
+        }
+    }
+}
+
+void mejores_gral(vekest &V)
+{
+    shellsort_pg(V);
+    ofstream archivo("Maximos.csv");
+    if(archivo.is_open())
+    {
+        int i=V.size();
+        for(int j = i-100;j<i;j++)
+        {
+            string aux ="";
+            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_pg()) +'\n';
+            archivo << aux;
+        }
+
+        int a=0;
+        while(a<100)
+        {
+            V.pop_back();
+            a++;
+        }
+        archivo.close();
+
+    }
+}
+
+void mejores_artes(vekest &V)
+{
+    shellsort_artes(V);
+    ofstream archivo("Artistico.csv");
+    if(archivo.is_open())
+    {
+        int i=V.size();
+        for(int j = i-100;j<i;j++)
+        {
+            string aux ="";
+            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_paryed()) +'\n';
+            archivo << aux;
+        }
+
+        int a=0;
+        while(a<100)
+        {
+            V.pop_back();
+            a++;
+        }
+        archivo.close();
+
+    }
+}
+
+void mejores_humanismo(vekest &V)
+{
+    shellsort_human(V);
+    ofstream archivo("humanismo.csv");
+    if(archivo.is_open())
+    {
+        int i=V.size();
+        for(int j = i-100;j<i;j++)
+        {
+            string aux ="";
+            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_plehi()) +'\n';
+            archivo << aux;
+        }
+
+        int a=0;
+        while(a<100)
+        {
+            V.pop_back();
+            a++;
+        }
+        archivo.close();
+
+    }
+}
+
+void mejores_cientifico(vekest &V)
+{
+    shellsort_cientifico(V);
+    ofstream archivo("tecnicos.csv");
+    if(archivo.is_open())
+    {
+        int i=V.size();
+        for(int j = i-100;j<i;j++)
+        {
+            string aux ="";
+            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_pmaci()) +'\n';
+            archivo << aux;
+        }
+
+        int a=0;
+        while(a<100)
+        {
+            V.pop_back();
+            a++;
+        }
+        archivo.close();
+
+    }
 }
 
 
