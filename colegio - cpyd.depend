@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1619635062 source:c:\users\carlo\documents\codeblocks\colegio - cpyd\main.cpp
+	"Funciones.h"
+
+1619635072 c:\users\carlo\documents\codeblocks\colegio - cpyd\funciones.h
+	<iostream>
+	<sstream>
+	<string>
+	<cstring>
+	<stdio.h>
+	<fstream>
+	<stack>
+
+1619635101 source:c:\users\carlo\documents\codeblocks\colegio - cpyd\funciones.cpp
+	"Funciones.h"
+
