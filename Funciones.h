@@ -1,6 +1,7 @@
 #ifndef FUNCIONES_H_INCLUDED
 #define FUNCIONES_H_INCLUDED
 
+//Se incluyen todas las librerias a usar
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -10,49 +11,35 @@
 #include <vector>
 using namespace std;
 
-class estudiante
+class estudiante //Declaración de la clase estudiante que guarda los datos obtenidos mediante el archivo estudiantes.csv
 {
     public:
+        //Declaración de constructores
         estudiante();
         estudiante(int ident, string cod, int leng, int ing, int mat, int cien, int hist, int tecn, int art, int ed_fis);
-        void mostrar();
+        //Declaración de getters
         int get_pg(); //retorna el promedio general
         int get_paryed(); //retorna el promedio entre arte y educacion fisica
         int get_plehi(); //retorna el promedio entre lenguaje e historia
         int get_pmaci(); //retorna el promedio entre matematica y ciencias
         string get_codigo();
         int get_iden();
-        virtual ~estudiante();
 
     protected:
 
     private:
         int identificador;
         string codigo;
-        int lenguaje;
-        int ingles;
-        int matematica;
-        int ciencias;
-        int historia;
-        int tecnologia;
-        int arte;
-        int ed_fisica;
+        //Se guardarán los promedios solamente para agilizar la ejecución del programa
         int prom_gral;
         int prom_artyed;
         int prom_lengyhist;
         int prom_matycien;
 };
 
-typedef vector<estudiante> vekest;
+typedef vector<estudiante> vekest; //declaración de vector de tipo estudiante para código más limpio
 
 
-
-int str_to_int(string);
-void procesar(vekest &);
-void ver_vector(vekest);
-void mejores_gral(vekest &);
-void mejores_artes(vekest &);
-void mejores_humanismo(vekest &);
-void mejores_cientifico(vekest &);
-
+//Prototipo de procedimiento que se ejecutará en el main
+void programa(vekest &);
 #endif // FUNCIONES_H_INCLUDED
