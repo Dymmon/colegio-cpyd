@@ -115,7 +115,7 @@ void procesar(vekest &V) //Procedimiento principal del programa que procesa el a
 }
 
 
-void shellsort_pg(vekest &V) //Shellsort que ordena por promedio general
+void shellsort(vekest &V, int indicador) //Shellsort para ordenar de menor a mayor por promedio, el indicador indica cual es el criterio a ordenar
 {
     int n=V.size();
     for(int gap = n/2; gap > 0; gap /= 2)
@@ -124,72 +124,57 @@ void shellsort_pg(vekest &V) //Shellsort que ordena por promedio general
         {
             estudiante aux=V[i];
             int j;
-            for(j = i; j >= gap && V[j - gap].get_pg() > aux.get_pg(); j -= gap)
-                V[j] = V[j - gap];
+            switch(indicador){
+
+            case 0: //ordena respecto al promedio general
+                for(j = i; j >= gap && V[j - gap].get_pg() > aux.get_pg(); j -= gap)
+                    V[j] = V[j - gap];
+                break;
+            case 1: //ordena respecto al promedio artístico
+                for(j = i; j >= gap && V[j - gap].get_paryed() > aux.get_paryed(); j -= gap)
+                    V[j] = V[j - gap];
+                break;
+            case 2: //ordena respecto al promedio humanista
+                for(j = i; j >= gap && V[j - gap].get_plehi() > aux.get_plehi(); j -= gap)
+                    V[j] = V[j - gap];
+                break;
+            case 3: //ordena respecto al promedio técnico
+                for(j = i; j >= gap && V[j - gap].get_pmaci() > aux.get_pmaci(); j -= gap)
+                    V[j] = V[j - gap];
+                break;
+            }
             V[j]= aux;
         }
     }
+
 }
 
-void shellsort_artes(vekest &V) //Shellsort que ordena por promedio artístico
+void mejores(vekest &V, int indicador, string nombre_archivo) //Procedimiento que escribe el archivo dependiendo del indicador
 {
-    int n=V.size();
-    for(int gap = n/2; gap > 0; gap /= 2)
-    {
-        for(int i = gap; i<n; i+=1)
-        {
-            estudiante aux=V[i];
-            int j;
-            for(j = i; j >= gap && V[j - gap].get_paryed() > aux.get_paryed(); j -= gap)
-                V[j] = V[j - gap];
-            V[j]= aux;
-        }
-    }
-}
-
-void shellsort_human(vekest &V) //Shellsort que ordena por promedio humanismo
-{
-    int n=V.size();
-    for(int gap = n/2; gap > 0; gap /= 2)
-    {
-        for(int i = gap; i<n; i+=1)
-        {
-            estudiante aux=V[i];
-            int j;
-            for(j = i; j >= gap && V[j - gap].get_plehi() > aux.get_plehi(); j -= gap)
-                V[j] = V[j - gap];
-            V[j]= aux;
-        }
-    }
-}
-
-void shellsort_cientifico(vekest &V) //Shellsort que ordena por promedio técnico
-{
-    int n=V.size();
-    for(int gap = n/2; gap > 0; gap /= 2)
-    {
-        for(int i = gap; i<n; i+=1)
-        {
-            estudiante aux=V[i];
-            int j;
-            for(j = i; j >= gap && V[j - gap].get_pmaci() > aux.get_pmaci(); j -= gap)
-                V[j] = V[j - gap];
-            V[j]= aux;
-        }
-    }
-}
-
-void mejores_gral(vekest &V) //Procedimiento que crea el archivo máximos.csv
-{
-    shellsort_pg(V); //Se ordenan los estudiantes por su promedio general de menor a mayor
-    ofstream archivo("Maximos.csv");
+    shellsort(V,indicador);
+    ofstream archivo(nombre_archivo+".csv");
     if(archivo.is_open())
     {
         int i=V.size();
         for(int j = i-100;j<i;j++) //Se escriben los últimos 100 estudiantes que por el ordenamiento son los 100 con promedio más alto
         {
             string aux ="";
-            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_pg()) +'\n';
+            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";";
+            switch(indicador){
+            case 0: //Escribe el promedio general
+                aux+= to_string(V[j].get_pg());
+                break;
+            case 1: //Escribe el promedio artístico
+                aux+= to_string(V[j].get_paryed());
+                break;
+            case 2: //Escribe el promedio humanista
+                aux+= to_string(V[j].get_plehi());
+                break;
+            case 3: //Escribe el promedio técnico
+                aux+= to_string(V[j].get_pmaci());
+                break;
+            }
+            aux+= '\n';
             archivo << aux;
         }
 
@@ -199,97 +184,18 @@ void mejores_gral(vekest &V) //Procedimiento que crea el archivo máximos.csv
             V.pop_back();
             a++;
         }
-        cout << "Archivo Maximos.csv creado con exito" << endl;
+        cout << "Archivo " << nombre_archivo << ".csv creado con exito" << endl;
         archivo.close();
-
-    }
-}
-
-void mejores_artes(vekest &V) //Procedimiento que crea el archivo artístico.csv
-{
-    shellsort_artes(V); //Se ordenan los estudiantes por su promedio artístico de menor a mayor
-    ofstream archivo("Artistico.csv");
-    if(archivo.is_open())
-    {
-        int i=V.size();
-        for(int j = i-100;j<i;j++)  //Se escriben los últimos 100 estudiantes que por el ordenamiento son los 100 con promedio más alto
-        {
-            string aux ="";
-            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_paryed()) +'\n';
-            archivo << aux;
-        }
-
-        int a=0;
-        while(a<100) //Se borran los últimos 100 estudiantes del vector para catalogar los siguientes
-        {
-            V.pop_back();
-            a++;
-        }
-        cout << "Archivo Artistico.csv creado con exito" << endl;
-        archivo.close();
-
-    }
-}
-
-void mejores_humanismo(vekest &V) //Procedimiento que crea el archivo humanismo.csv
-{
-    shellsort_human(V);
-    ofstream archivo("Humanismo.csv"); //Se ordenan los estudiantes por su promedio humanista de menor a mayor
-    if(archivo.is_open())
-    {
-        int i=V.size();
-        for(int j = i-100;j<i;j++) //Se escriben los últimos 100 estudiantes que por el ordenamiento son los 100 con promedio más alto
-        {
-            string aux ="";
-            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_plehi()) +'\n';
-            archivo << aux;
-        }
-
-        int a=0;
-        while(a<100) //Se borran los últimos 100 estudiantes del vector para catalogar los siguientes
-        {
-            V.pop_back();
-            a++;
-        }
-        cout << "Archivo Humanismo.csv creado con exito" << endl;
-        archivo.close();
-
-    }
-}
-
-void mejores_cientifico(vekest &V) //Procedimiento que crea el archivo tecnico.csv
-{
-    shellsort_cientifico(V); //Se ordenan los estudiantes por su promedio técnico de menor a mayor
-    ofstream archivo("Tecnicos.csv");
-    if(archivo.is_open())
-    {
-        int i=V.size();
-        for(int j = i-100;j<i;j++) //Se escriben los últimos 100 estudiantes que por el ordenamiento son los 100 con promedio más alto
-        {
-            string aux ="";
-            aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";" + to_string(V[j].get_pmaci()) +'\n';
-            archivo << aux;
-        }
-
-        int a=0;
-        while(a<100) //Se borran los últimos 100 estudiantes del vector por si hubiese que hacer más listas
-        {
-            V.pop_back();
-            a++;
-        }
-        cout << "Archivo Tecnicos.csv creado con exito" << endl;
-        archivo.close();
-
     }
 }
 
 void programa(vekest &V) //Procedimiento que ejecuta todo
 {
     procesar(V);
-    mejores_gral(V);
-    mejores_artes(V);
-    mejores_humanismo(V);
-    mejores_cientifico(V);
+    mejores(V,0,"Maximos");
+    mejores(V,1,"Artistico");
+    mejores(V,2,"Humanismo");
+    mejores(V,3,"Tecnico");
 }
 
 
