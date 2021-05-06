@@ -1,7 +1,7 @@
 #include "Funciones.h"
 
 
-estudiante::estudiante() //Constructor vacï¿½o de la clase estudiante//
+estudiante::estudiante() //Constructor vacío de la clase estudiante
 {
     identificador=0;
     codigo="";
@@ -10,7 +10,7 @@ estudiante::estudiante() //Constructor vacï¿½o de la clase estudiante//
     prom_matycien=0;
 }
 
-estudiante::estudiante(int ident, string cod, int leng, int ing, int mat, int cien, int hist, int tecn, int art, int ed_fis) //Constructor con parï¿½metros de la clase estudiante
+estudiante::estudiante(int ident, string cod, int leng, int ing, int mat, int cien, int hist, int tecn, int art, int ed_fis) //Constructor con parámetros de la clase estudiante
 {
     identificador = ident;
     codigo = cod;
@@ -52,7 +52,7 @@ int estudiante::get_iden()
 }
 
 
-string RemoveChar(string str, char c) //Funciï¿½n que remueve un caracter de un string para eliminar los " que vienen en el archivo
+string RemoveChar(string str, char c) //Función que remueve un caracter de un string para eliminar los " que vienen en el archivo
 {
    string result;
    for (size_t i = 0; i < str.size(); i++)
@@ -64,7 +64,7 @@ string RemoveChar(string str, char c) //Funciï¿½n que remueve un caracter de un 
        return result;
 }
 
-int str_to_int(string s) //Funciï¿½n para transformar los nï¿½meros con puntos en nï¿½meros utilizables
+int str_to_int(string s) //Función para transformar los números con puntos en números utilizables
 {
     stringstream texto(s);
     string aux, numero="";
@@ -86,30 +86,30 @@ void procesar(vekest &V) //Procedimiento principal del programa que procesa el a
         {   string linea;
             while(getline(archivo, linea))
             {
-                linea=RemoveChar(linea,'"'); //invocaciï¿½n de funciï¿½n que borra los "
+                linea=RemoveChar(linea,'"'); //invocación de función que borra los "
                 int iden ,i=0,notas[]={0,0,0,0,0,0,0,0};
                 string codigo, segmento;
                 stringstream help(linea);
                 while(getline(help, segmento, ';' ))
                 {
-                    if(i==0) //Se guarda el nï¿½mero identificatorio
+                    if(i==0) //Se guarda el número identificatorio
                     {
                         char *cst = new char [segmento.length()+1];
                         strcpy(cst, segmento.c_str());
                         iden = atoi(cst);
                     }
-                    if(i==1) //Se guarda el nombre genï¿½rico del alumno
+                    if(i==1) //Se guarda el nombre genérico del alumno
                     {
                         codigo = segmento;
                     }
-                    if(i>1) //Se guardan las notas en un arreglo para el acceso mï¿½s fï¿½cil
+                    if(i>1) //Se guardan las notas en un arreglo para el acceso más fácil
                     {
-                        notas[i-2]=str_to_int(segmento); //Se invoca a la funciï¿½n que transforma los nï¿½meros con punto en nï¿½meros usables
+                        notas[i-2]=str_to_int(segmento); //Se invoca a la función que transforma los números con punto en números usables
                     }
                     i++;
                 }
-                estudiante aux(iden,codigo,notas[0],notas[1],notas[2],notas[3],notas[4],notas[5],notas[6],notas[7]); //Creaciï¿½n del estudiante con los datos recopilados
-                V.push_back(aux); //Se aï¿½ade el estudiante al vector
+                estudiante aux(iden,codigo,notas[0],notas[1],notas[2],notas[3],notas[4],notas[5],notas[6],notas[7]); //Creación del estudiante con los datos recopilados
+                V.push_back(aux); //Se añade el estudiante al vector
             }
         }
 }
@@ -130,7 +130,7 @@ void shellsort(vekest &V, int indicador) //Shellsort para ordenar de menor a may
                 for(j = i; j >= gap && V[j - gap].get_pg() > aux.get_pg(); j -= gap)
                     V[j] = V[j - gap];
                 break;
-            case 1: //ordena respecto al promedio artï¿½stico
+            case 1: //ordena respecto al promedio artístico
                 for(j = i; j >= gap && V[j - gap].get_paryed() > aux.get_paryed(); j -= gap)
                     V[j] = V[j - gap];
                 break;
@@ -138,7 +138,7 @@ void shellsort(vekest &V, int indicador) //Shellsort para ordenar de menor a may
                 for(j = i; j >= gap && V[j - gap].get_plehi() > aux.get_plehi(); j -= gap)
                     V[j] = V[j - gap];
                 break;
-            case 3: //ordena respecto al promedio tï¿½cnico
+            case 3: //ordena respecto al promedio técnico
                 for(j = i; j >= gap && V[j - gap].get_pmaci() > aux.get_pmaci(); j -= gap)
                     V[j] = V[j - gap];
                 break;
@@ -156,7 +156,7 @@ void mejores(vekest &V, int indicador, string nombre_archivo) //Procedimiento qu
     if(archivo.is_open())
     {
         int i=V.size();
-        for(int j = i-100;j<i;j++) //Se escriben los ï¿½ltimos 100 estudiantes que por el ordenamiento son los 100 con promedio mï¿½s alto
+        for(int j = i-100;j<i;j++) //Se escriben los últimos 100 estudiantes que por el ordenamiento son los 100 con promedio más alto
         {
             string aux ="";
             aux += to_string(V[j].get_iden()) + ";" + V[j].get_codigo() + ";";
@@ -164,13 +164,13 @@ void mejores(vekest &V, int indicador, string nombre_archivo) //Procedimiento qu
             case 0: //Escribe el promedio general
                 aux+= to_string(V[j].get_pg());
                 break;
-            case 1: //Escribe el promedio artï¿½stico
+            case 1: //Escribe el promedio artístico
                 aux+= to_string(V[j].get_paryed());
                 break;
             case 2: //Escribe el promedio humanista
                 aux+= to_string(V[j].get_plehi());
                 break;
-            case 3: //Escribe el promedio tï¿½cnico
+            case 3: //Escribe el promedio técnico
                 aux+= to_string(V[j].get_pmaci());
                 break;
             }
@@ -179,7 +179,7 @@ void mejores(vekest &V, int indicador, string nombre_archivo) //Procedimiento qu
         }
 
         int a=0;
-        while(a<100) //Se borran los ï¿½ltimos 100 estudiantes del vector para catalogar los siguientes
+        while(a<100) //Se borran los últimos 100 estudiantes del vector para catalogar los siguientes
         {
             V.pop_back();
             a++;

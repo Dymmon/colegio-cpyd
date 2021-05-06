@@ -1,11 +1,9 @@
-//Se incluye header funciones.h que contiene librerï¿½as y declaraciones a utilizar
+//Se incluye header funciones.h que contiene librerías y declaraciones a utilizar
 #include "Funciones.h"
 
 int main()
 {
     vekest V;
     programa(V);
-    cout << "...presione una tecla para continuar...";
-    cin.ignore().get();
     return 0;
 }
