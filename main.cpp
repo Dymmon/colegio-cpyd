@@ -5,6 +5,7 @@ int main()
 {
     vekest V;
     programa(V);
-    system("pause");
+    cout << "...presione una tecla para continuar...";
+    cin.ignore().get();
     return 0;
 }
